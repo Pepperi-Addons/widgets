@@ -1,2 +1,4 @@
-<!-- If you use tabs here add 'page-builder-editor-tabs' class on the mat-tab-group element -->
-Block editor works...
+
+<pep-textarea></pep-textarea>
+<pep-field-title [label]="'EDITOR.GENERAL.ON_LOAD_FLOW' | translate"></pep-field-title>
+<pep-flow-picker-button [flowHostObject]="flowHostObject" (flowChange)="onFlowChange($event)"></pep-flow-picker-button>

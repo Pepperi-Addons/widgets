@@ -5,6 +5,12 @@ import { TranslateLoader, TranslateModule, TranslateService, TranslateStore } fr
 
 import { PepAddonService } from '@pepperi-addons/ngx-lib';
 
+import { PepFlowPickerButtonModule } from '@pepperi-addons/ngx-composite-lib/flow-picker-button';
+
+import { PepFieldTitleModule } from '@pepperi-addons/ngx-lib/field-title';
+
+import { PepTextareaModule } from '@pepperi-addons/ngx-lib/textarea';
+
 import { BlockEditorComponent } from './index';
 
 import { config } from '../app.config';
@@ -13,6 +19,9 @@ import { config } from '../app.config';
     declarations: [BlockEditorComponent],
     imports: [
         CommonModule,
+        PepFlowPickerButtonModule,
+        PepFieldTitleModule,
+        PepTextareaModule,
         TranslateModule.forChild({
             loader: {
                 provide: TranslateLoader,
