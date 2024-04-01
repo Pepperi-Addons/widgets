@@ -19,6 +19,7 @@ export class BlockComponent implements OnInit {
   zendesk = `<script id=“ze-snippet” src=“https://static.zdassets.com/ekr/snippet.js?key=fdbd81aa-20c5-4c44-975d-0956919574b7“></script>`;
   alert = `<script>(function() {console.log('dor');})()</script>`;
   tawkIo = `<script type="text/javascript">var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();(function(){var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];s1.async=true;s1.src='https://embed.tawk.to/660953021ec1082f04dd333a/1hqa6ogun';s1.charset='UTF-8';s1.setAttribute('crossorigin','*');s0.parentNode.insertBefore(s1,s0);})();</script>`;
+  widgetName = `RandomWidgetName`;
   @Output() hostEvents: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
@@ -56,11 +57,13 @@ export class BlockComponent implements OnInit {
         );
       }
       scriptElement.type = "text/javascript";
-      //if existing id keep it if not generate internal
-      scriptElement.hasAttribute('id') ? null : scriptElement.id = 'pep-external-widget-loader';
-      //check if widget exists on body
+      //if existing id keep it if not generate internal - need to remove after widget name comes from config input
+      scriptElement.hasAttribute("id")
+        ? null
+        : (scriptElement.id = `${this.widgetName}`);
+      //check if widget exists on body - need to change according to the name brought from configuration
       const existingElement = document.getElementById(scriptElement.id);
-      if(existingElement) {
+      if (existingElement) {
         return;
       }
       this.renderer.appendChild(document.body, scriptElement); // Append to the body
