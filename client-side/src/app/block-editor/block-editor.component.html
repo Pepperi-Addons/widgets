@@ -1,4 +1,21 @@
-
-<pep-textarea></pep-textarea>
-<pep-field-title [label]="'EDITOR.GENERAL.ON_LOAD_FLOW' | translate"></pep-field-title>
-<pep-flow-picker-button [flowHostObject]="flowHostObject" (flowChange)="onFlowChange($event)"></pep-flow-picker-button>
+<div class="page-builder-editor-container">
+  <div>
+    <pep-textarea
+      [label]="'EDITOR.GENERAL.WIDGET' | translate"
+      rowSpan="4"
+      [value]="configuration?.WidgetConfig?.widgetSnippet || ''"
+      [showTitle]="true"
+      (valueChange)="scriptStringValueChanged('widgetSnippet', $event)"
+    ></pep-textarea>
+  </div>
+  <div>
+    <pep-field-title
+      [label]="'EDITOR.GENERAL.ON_LOAD_FLOW' | translate"
+    ></pep-field-title>
+    <pep-flow-picker-button
+      [flowHostObject]="flowHostObject"
+      (flowChange)="onFlowChange($event)"
+      [flowDlgSize]="'regular'"
+    ></pep-flow-picker-button>
+  </div>
+</div>

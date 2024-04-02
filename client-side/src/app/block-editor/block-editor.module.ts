@@ -14,6 +14,7 @@ import { PepTextareaModule } from '@pepperi-addons/ngx-lib/textarea';
 import { BlockEditorComponent } from './index';
 
 import { config } from '../app.config';
+import { FlowService } from '../services/flows.service';
 
 @NgModule({
     declarations: [BlockEditorComponent],
@@ -34,6 +35,7 @@ import { config } from '../app.config';
     exports: [BlockEditorComponent],
     providers: [
         TranslateStore,
+        FlowService
         // Add here all used services.
     ]
 })

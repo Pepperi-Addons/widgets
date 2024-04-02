@@ -1,5 +1,12 @@
 import { TranslateService } from "@ngx-translate/core";
-import { Component, EventEmitter, Input, OnInit, Output,ViewContainerRef } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewContainerRef,
+} from "@angular/core";
 import { FlowService } from "src/app/services/flows.service";
 import { PepAddonBlockLoaderService } from "@pepperi-addons/ngx-lib/remote-loader";
 import { MatDialogRef } from "@angular/material/dialog";
@@ -83,35 +90,70 @@ export class BlockEditorComponent implements OnInit {
 
   onLoadFlowName;
 
-  private getDefaultHostObject(): IWidget {
-    return { WidgetConfig: new IWidgetConfig(), Widget: "" };
-  }
-
   constructor(
     private translate: TranslateService,
     private flowService: FlowService,
     private pepAddonService: PepAddonService,
     private addonBlockLoaderService: PepAddonBlockLoaderService,
-    private viewContainerRef: ViewContainerRef,
+    private viewContainerRef: ViewContainerRef
   ) {}
 
+  ngOnInit(): void {
+    debugger;
+    if (!this.configuration) {
+      this.loadDefaultConfiguration();
+    }
+  }
+
+  ngOnChanges(e: any): void {}
+
+  private getDefaultHostObject(): IWidget {
+    return { WidgetConfig: new IWidgetConfig() };
+  }
+
+  private loadDefaultConfiguration() {
+    this.configuration = this.getDefaultHostObject();
+    this.updateHostObject();
+    this.flowHostObject = this.flowService.prepareFlowHostObject(
+      this.configuration.WidgetConfig.OnLoadFlow || null
+    );
+  }
+
+  scriptStringValueChanged(key: string, value: any) {
+    debugger;
+    this.configuration.WidgetConfig[key] = value;
+    this.updateHostObject();
+  }
+
+  //***************************** DEFAULT GENERIC METHODS START ******************************/
+  private updateHostObject() {
+    this.hostEvents.emit({
+      action: "set-configuration",
+      configuration: this.configuration,
+    });
+  }
+
+  private updateHostObjectField(fieldKey: string, value: any) {
+    this.hostEvents.emit({
+      action: "set-configuration-field",
+      key: fieldKey,
+      value: value,
+    });
+  }
+
+  private emitSetPageConfiguration() {
+    this.hostEvents.emit({
+      action: "set-page-configuration",
+      pageConfiguration: this._pageConfiguration,
+    });
+  }
+
+  //********************** FLOW AND CONSUMER PARAMETERS START **********************/
   onFlowChange(flowData: any) {
     const base64Flow = btoa(JSON.stringify(flowData));
     this.configuration.WidgetConfig.OnLoadFlow = base64Flow;
     this.updateHostObjectField(`WidgetConfig.OnLoadFlow`, base64Flow);
-    //his.updatePageConfigurationObject();
-  }
-
-  ngOnInit(): void {}
-
-  ngOnChanges(e: any): void {}
-
-  private loadDefaultConfiguration() {
-    this._configuration = this.getDefaultHostObject();
-    this.updateHostObject();
-    this.flowHostObject = this.flowService.prepareFlowHostObject(
-      this._configuration.WidgetConfig.OnLoadFlow || null
-    );
+    this.updatePageConfigurationObject();
   }
 
   private initPageConfiguration(value: PageConfiguration = null) {
@@ -183,80 +225,4 @@ export class BlockEditorComponent implements OnInit {
       }
     }
   }
-
-  private updateHostObject() {
-    this.hostEvents.emit({
-      action: "set-configuration",
-      configuration: this.configuration,
-    });
-  }
-
-  private updateHostObjectField(fieldKey: string, value: any) {
-    this.hostEvents.emit({
-      action: "set-configuration-field",
-      key: fieldKey,
-      value: value,
-    });
-  }
-
-  private emitSetPageConfiguration() {
-    this.hostEvents.emit({
-      action: "set-page-configuration",
-      pageConfiguration: this._pageConfiguration,
-    });
-  }
-
-    openFlowPickerDialog() {
-      const flow = this.configuration.WidgetConfig.OnLoadFlow
-        ? JSON.parse(atob(this.configuration.WidgetConfig.OnLoadFlow))
-        : null;
-      let hostObj = {};
-
-      if (flow) {
-        hostObj = {
-          runFlowData: {
-            FlowKey: flow.FlowKey,
-            FlowParams: flow.FlowParams,
-          },
-          fields: {
-            OnLoad: {
-              Type: "Object",
-            },
-            Test: {
-              Type: "String",
-            },
-          },
-        };
-      } else {
-        hostObj = {
-          fields: {
-            OnLoad: {
-              Type: "Object",
-            },
-            Test: {
-              Type: "String",
-            },
-          },
-        };
-      }
-
-      this.dialogRef = this.addonBlockLoaderService.loadAddonBlockInDialog({
-        container: this.viewContainerRef,
-        name: "FlowPicker",
-        size: "large",
-        hostObject: hostObj,
-        hostEventsCallback: async (event) => {
-          if (event.action === "on-done") {
-            const base64Flow = btoa(JSON.stringify(event.data));
-            this.configuration.WidgetConfig.OnLoadFlow =
-              event.data?.FlowKey !== "" ? base64Flow : null;
-            this.updateHostObject();
-            this.dialogRef.close();
-            this.onLoadFlowName = this.configuration.WidgetConfig.OnLoadFlow;
-          } else if (event.action === "on-cancel") {
-            this.dialogRef.close();
-          }
-        },
-      });
-    }
 }

@@ -1,6 +1,7 @@
 import { Page } from "@pepperi-addons/papi-sdk";
+import { v4 as uuid } from "uuid";
 
-export const addonUUID = 'c62f8195-4eeb-4231-a63e-6e53d90b5f96';
+export const addonUUID = "c62f8195-4eeb-4231-a63e-6e53d90b5f96";
 
 export interface IHostObject {
   configuration: IWidget;
@@ -15,13 +16,18 @@ export class WidgetEditor {
 
 export interface IWidget {
   WidgetConfig: IWidgetConfig;
-  Widget: string;
 }
 
 export class IWidgetConfig {
-  widget: string;
+  widgetSnippet: string;
   widgetId: string;
   OnLoadFlow: any;
+
+  constructor(widgetStnippet = "", widgetId = "", OnLoadFlow = null) {
+    this.widgetSnippet = widgetStnippet;
+    this.widgetId = `${addonUUID}_${uuid()}`;
+    this.OnLoadFlow = OnLoadFlow;
+  }
 }
 
 export interface IEditorHostObject {
