@@ -17,8 +17,7 @@ import { IHostObject, IWidget } from "../widgets.model";
 export class BlockComponent implements OnInit {
   @Input()
   set hostObject(value: IHostObject) {
-    debugger;
-    //this._configuration = value?.configuration;
+    //debugger;
     if (value?.configuration && Object.keys(value.configuration).length) {
       this.configuration = value?.configuration;
     }
@@ -40,10 +39,12 @@ export class BlockComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const script = this.configuration.WidgetConfig.widgetSnippet || "";
-    const id = this.configuration.WidgetConfig.widgetId || "";
-    if (script.length > 0) {
-      this.insertScriptElement(script, id);
+    if (this.configuration) {
+      const script = this.configuration.WidgetConfig.widgetSnippet || "";
+      const id = this.configuration.WidgetConfig.widgetId || "";
+      if (script.length > 0) {
+        this.insertScriptElement(script, id);
+      }
     }
   }
 
@@ -73,7 +74,7 @@ export class BlockComponent implements OnInit {
         );
       }
       scriptElement.type = "text/javascript";
-      //if existing id keep it if not generate internal - need to remove after widget name comes from config input
+      //check if id is existing on new element
       scriptElement.hasAttribute("id") ? null : (scriptElement.id = id);
       //check if widget exists on body - need to change according to the name brought from configuration
       const existingElement = document.getElementById(scriptElement.id);

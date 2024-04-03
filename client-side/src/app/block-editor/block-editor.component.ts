@@ -99,7 +99,7 @@ export class BlockEditorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    debugger;
+    //debugger;
     if (!this.configuration) {
       this.loadDefaultConfiguration();
     }
@@ -120,7 +120,7 @@ export class BlockEditorComponent implements OnInit {
   }
 
   scriptStringValueChanged(key: string, value: any) {
-    debugger;
+    //debugger;
     this.configuration.WidgetConfig[key] = value;
     this.updateHostObject();
   }
