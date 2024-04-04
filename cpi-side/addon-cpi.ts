@@ -33,12 +33,12 @@ router.post("/on_load", async (req, res) => {
   let configurationRes = configuration;
   const state = req?.body?.State || {};
   // check if flow configured to on load --> run flow (instaed of onload event)
-  if (configuration?.OnLoadFlow) {
+  if (configuration?.WidgetConfig?.OnLoadFlow) {
     try {
       const cpiService = new WidgetsCPIService();
       //CALL TO FLOWS AND SET CONFIGURATION
       const result: any = await cpiService.getOptionsFromFlow(
-        configuration.OnLoadFlow || [],
+        configuration?.WidgetConfig?.OnLoadFlow || [],
         state,
         req.context,
         configuration

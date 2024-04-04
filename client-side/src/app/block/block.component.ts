@@ -17,7 +17,7 @@ import { IHostObject, IWidget } from "../widgets.model";
 export class BlockComponent implements OnInit {
   @Input()
   set hostObject(value: IHostObject) {
-    //debugger;
+    //debugger
     if (value?.configuration && Object.keys(value.configuration).length) {
       this.configuration = value?.configuration;
     }
@@ -73,6 +73,7 @@ export class BlockComponent implements OnInit {
           this.renderer.createText(script.innerHTML)
         );
       }
+
       scriptElement.type = "text/javascript";
       //check if id is existing on new element
       scriptElement.hasAttribute("id") ? null : (scriptElement.id = id);

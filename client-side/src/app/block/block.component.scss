@@ -1,0 +1,12 @@
+:host {
+    height: 0px !important; // This block has no UI
+    min-height: 0px !important;
+}
+
+
+body {
+    .section-container #pep-widget-container {
+        max-height: 0px !important;
+        height: 0px !important; // This block has no UI
+    }
+}
