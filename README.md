@@ -82,6 +82,21 @@ ii.widgets that do not support loading during runtime
 3.Save the page (make sure its published)
 4.Configure the slug for it -> sync
 5.Go to homescreen -> widget should be available
+6.Path value example:
+
+-Lets say we have an object:
+const Object = {
+  Controls:['right','left'],
+  TimeStamps: {
+    ModificationDate:'',
+    CreationDate:''
+  }
+}
+
+-In order to get the value for the second place of controls: Object.Controls.[1]
+-In order to get the value for the ModificationDate: Object.TimeStamps.ModificationDate
+
+-This logic is modeled after ['json-path'] (https://www.npmjs.com/package/jsonpath) according to product requirements 
 
 ## Block
 - The block itself has no UI
