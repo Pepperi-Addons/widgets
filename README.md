@@ -1,105 +1,92 @@
-# @pepperi-addons Typescript Template
+# Widgets
 
-A template for creating a pepperi addon with an angular app for the client-side & a typescript nodejs app for the server-side
+## High Level
+The widgets addon was created for the following reason:
+Allow customers to
 
-* debugging server side right in vscode 
-* a build script for creating all compiled files for addon
-* a publish script for uploading the addon
-
-
-## Installation
 ---
-#### System Requirements
-`node --version` > 12.0.0
 
-`npm --version` > 6.0.0
+## Releases
+| Version | Description | Migration |
+|-------- |------------ |---------- |
+| 1.0 | Addon phased version - includes basic functionallity according to product requirements | - |
 
-#### Install by running 
-``` bash
-npm init @pepperi-addons
-```
-or 
-``` bash
-npx @pepperi-addons/create
-```
-
-## Project structure
 ---
-The following is an overview of the project structure. 
-The node_modules folder is in use by `npm`
 
-#### Folders
-|Folder | Description |
-| ---:  | :---       |
-| .vscode | vscode tasks & launch |
-| client-side | an angular app that is the UI of the plugin |
-| server-side | a typescripe node.js app for writing an addon API |
-| publish | all files to be published to the addon are created in this folder |
-| publish/api | the api endpoints created |
-| publish/assets | put any assets you might need for the front end (eg. translation files, images) |
+## Deployment
+After a PR is merged into a release branch a version will be published.
 
-#### Additional files
-`addon.config.json` contains information for publishing the addon
-
-`var_sk` put the var API secret key here, for publishing the addon. Make sure not to commit this file. How to get the secret you ask? It's a secret!
-
-`README.md` This file. You can file info here regarding your project.
+---
 
 ## Debugging
+- client-side - addon this to your URL while the block is running and this addon client side is running locally:
+&devBlocks=%5B%5B"BlockComponent","http:%2F%2Flocalhost:4400%2Ffile_c62f8195-4eeb-4231-a63e-6e53d90b5f96.js"%5D%5D
+(Note the localhost you are running on locally)
+
+- cpi-side - `addon-cpi/on_load` - run the pepperi app locally and call this endpoint on cpi-side with the correct interface in order to debug the on_load function 
+
+### Local specific
+- None
+
+### Online specific
+- Log groups: 
+  - `/aws/lambda/AddonsExecuteJavaScriptLambdaAsync` / `dwa` - async jobs logs.
+  - `CPIService`/ `CPIManagerService` - CPI side logs
+
 ---
-To debug your addon in `Visual Studio Code`, press `F5` or `Run->Start Debugging`.
-You can then checkout your *API* at http://localhost:4400/api/foo. Be sure to supply a JWT for it to work.
 
-To view the addon UI, open https://app.pepperi.com/settings/your-app-uuid/editor?dev=true
+## Testing
+This addon does not require any tests (so far).
 
-If you haven't created the addon yet you can use our placeholder plugin: 
-https://app.sandbox.pepperi.com/settings/a8f4698f-eb75-4a75-bdf6-1524eb9f6baf/editor?dev=true
-
-Open the browser inspector to make sure that the editor file is served locally
-
-
-## Publishing
 ---
-When you are ready to publish your addon. Update the `addon.config.json` file, with your addons info (AddonUUID etc.). Change the `AddonVersion` to 1.0.0. The publish script will automatically bump the version patch number every time you publish the app. (eg. the next version will be 1.0.1).
 
-To publish your addon you will need the secret-key. It is unique per addon. Put it in the var_sk file.
+## Infra
+- Client-side - Page-builder (runs as a page block)
+- Cpi-side - CPINode (in charge of the flows methods)
 
-Then run: 
-``` bash 
-npm run publish-addon
-```
+### Run time:
+- Standart pepperi addons runtime
 
-## Addon API
+### External
+- Note some widgets are not supported:
+i.Widgets that include more than one HTML element
+ii.widgets that do not support loading during runtime
+
 ---
-An addon API is a javascript file that exports functions that can be called through the api.
-For example in `server-side/api.ts` we export a function `foo` like so:
-``` typescript
-export async function foo(client: Client, request: Request) {
-    const service = new MyService(client)
-    const res = await service.getAddons()
-    return res
-};
-```
-This function will run for the following API call:
-https://papi.pepperi.com/v1.0/addons/api/a8f4698f-eb75-4a75-bdf6-1524eb9f6baf/api/foo
 
-You can acess the API call method, query and body in `request.method` `request.query` and `request.body` respectfully.
+## Dependencies
 
-You can add as many files as you like in both typescript & javascript. These can `require` other files & packags. The build script will create a output file for every endpoint specified in: `addon.config.json` *Endpoints* field.
+| Addon | Usage |
+|-------- |------------ |
+| [Pages](https://github.com/Pepperi-Addons/page-builder) | Infrastructure |
 
-To debug these api's locally, just press F5, and call:
-http://localhost:4400/api/foo
-
-
-## Addon Editor
 ---
-The editor is the addon's UI and is developed as an Angular app.
 
-## Contributions
+## APIs
+- Currently no relevant server side API's are exposed
+
 ---
-This project is far from being complete, and is missing in tooling, documentation, examples and more. We are also interested in creating other templates like a html-css-js front-end with a vanilla node.js backend. You are welcome to contribute at: 
-https://github.com/Pepperi-Addons/create-addon
 
-Please create your on addon in a repo under:
-https://github.com/Pepperi-Addons
-so that we can all learn from each other
+## Limitations
+- The widget addon can support only one widgets per page, if there is more than one widget unexpected behavior will occur (the two widgets will clash)
+---
+
+## Known issues
+- On devices it works only on homescreen (as soon as you navigate away it will disappear,devices related issue not related to this addon)
+- The block has 2.5rem height (instead of none,pages bug,default height for a block),it should be configured as the bottom block on the page for UI purposes.
+---
+
+## Usage
+1.The user installs the addon
+2.The user configures a block on type "Wigets" on a page -> inputs the script tag that the inserted widget is using
+3.Save the page (make sure its published)
+4.Configure the slug for it -> sync
+5.Go to homescreen -> widget should be available
+
+## Block
+- The block itself has no UI
+- The block's job is to append the script into the body of the current html view (device/web)
+- Note it requires testing as some widgets are not supported as we mentioned earlier
+
+## Editor
+- Simple editor with a string input, and a flows configuration button
