@@ -77,14 +77,14 @@ ii.widgets that do not support loading during runtime
 ---
 
 ## Usage
-1.The user installs the addon
-2.The user configures a block on type "Wigets" on a page -> inputs the script tag that the inserted widget is using
-3.Save the page (make sure its published)
-4.Configure the slug for it -> sync
-5.Go to homescreen -> widget should be available
-6.Path value example:
+- The user installs the addon
+- The user configures a block on type "Wigets" on a page -> inputs the script tag that the inserted widget is using
+- Save the page (make sure its published)
+- Configure the slug for it -> sync
+- Go to homescreen -> widget should be available
+- Path value example:
 
--Lets say we have an object:
+- Lets say we have an object:
 const Object = {
   Controls:['right','left'],
   TimeStamps: {
@@ -93,10 +93,10 @@ const Object = {
   }
 }
 
--In order to get the value for the second place of controls: Object.Controls.[1]
--In order to get the value for the ModificationDate: Object.TimeStamps.ModificationDate
+- In order to get the value for the second place of controls: Object.Controls.[1]
+- In order to get the value for the ModificationDate: Object.TimeStamps.ModificationDate
 
--This logic is modeled after ['json-path'] (https://www.npmjs.com/package/jsonpath) according to product requirements 
+- This logic is modeled after ['json-path'] (https://www.npmjs.com/package/jsonpath) according to product requirements 
 
 ## Block
 - The block itself has no UI
