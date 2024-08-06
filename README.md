@@ -45,7 +45,7 @@ This addon does not require any tests (so far).
 - Cpi-side - CPINode (in charge of the flows methods)
 
 ### Run time:
-- Standart pepperi addons runtime
+- Standard pepperi addons runtime
 
 ### External
 - Note some widgets are not supported:
@@ -82,21 +82,6 @@ ii.widgets that do not support loading during runtime
 - Save the page (make sure its published)
 - Configure the slug for it -> sync
 - Go to homescreen -> widget should be available
-- Path value example:
-
-- Lets say we have an object:
-const Object = {
-  Controls:['right','left'],
-  TimeStamps: {
-    ModificationDate:'',
-    CreationDate:''
-  }
-}
-
-- In order to get the value for the second place of controls: Object.Controls.[1]
-- In order to get the value for the ModificationDate: Object.TimeStamps.ModificationDate
-
-- This logic is modeled after ['json-path'] (https://www.npmjs.com/package/jsonpath) according to product requirements 
 
 ## Block
 - The block itself has no UI
