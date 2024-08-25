@@ -1,8 +1,8 @@
 # Widgets
 
 ## High Level
-The widgets addon was created for the following reason:
-Allow customers to
+The Widgets addon was developed due to the need of our customers to inject customized widgets into their system screens.
+The most common use case for our customer specifically is chat agents.
 
 ---
 
@@ -69,6 +69,7 @@ ii.widgets that do not support loading during runtime
 
 ## Limitations
 - The widget addon can support only one widgets per page, if there is more than one widget unexpected behavior will occur (the two widgets will clash)
+-If you'll add more than one widgets of the exact same kind only one instance will appear due to a runtime validation done by the addon.
 ---
 
 ## Known issues
